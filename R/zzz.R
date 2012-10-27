@@ -1,6 +1,7 @@
 .onAttach = function(...) {
 
-   options(guiToolkit="RGtk2")
-   AtelieR()
+  options(guiToolkit="RGtk2")
+  
+  AtelieR()
 }
 
