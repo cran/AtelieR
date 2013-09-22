@@ -20,6 +20,9 @@ AtelieR()
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
+\references{
+Noel, Y. (2013). Psychologie statistique avec R, coll. Pratique R, Paris: Springer.
+}
 \author{
 Yvonnick Noel, University of Brittany, Rennes, France.
 }

@@ -1,11 +1,11 @@
-8862c601a7c58f30b5523b4e16809e54 *DESCRIPTION
+c7f9027dffc6aa5b3c5deaacc8556792 *DESCRIPTION
 1c542396090f3456ccf49baafa972653 *NAMESPACE
 daa9a5d09e0830d9dd4e14a0ba6b6282 *R/ateliers.R
 3560d69701e966cf70e1bcca98f7d48d *R/bayes2means.R
 bfb82f6a0afb0778d140538af3a88892 *R/bayesboth.R
 525b9ab6553b2cfd4d6664e181d843b6 *R/bayescat.R
 a12b9bd47b220032d97c4a934dfdd49f *R/bayesdelta2.R
-1872efa3521c4be7a6ee6b230a0e8199 *R/bayeskmeans.R
+8d1a6c7b38f56c26c9d7305d2a07d515 *R/bayeskmeans.R
 9b7abfcb636bf93e9a4109d6c64bccaf *R/bayeskprop.R
 794870873d2c5748088be60b0b45ef1b *R/bayesmean2.R
 0a1cc79ba72dc5829d5d11193f468804 *R/bayesprop.R
@@ -17,8 +17,8 @@ ed4d58e90f61202aa8346e6acf9b6eee *R/normal.R
 d1097fd8cccb979735a56cdce350c6d0 *R/probcalc.R
 3e71a86f50e4132d7bdd593bb6ceb4fd *R/rescale.R
 e827fd66b4148711083706e0b53f791b *R/zzz.R
-87c6ad59fa475c2c0474246a8712f46a *inst/po/fr/LC_MESSAGES/R-AtelieR.mo
+caee2db0fc5e5fd418f3719fdd92458e *inst/po/fr/LC_MESSAGES/R-AtelieR.mo
 2ab97ab8bb42cac9dc09a8c962201dab *inst/po/pl/LC_MESSAGES/R-AtelieR.mo
 7082d18fb5b691a9d47cf013297959fc *man/AtelieR-internal.Rd
 8524c895398bf4f42b66cd0c55a8d89d *man/AtelieR-package.Rd
-a57cfb52cdf7f675e0e792bbe45c859c *man/AtelieR.Rd
+7f4bfc5fb6cf738e2bc4999cf9f5ceac *man/AtelieR.Rd

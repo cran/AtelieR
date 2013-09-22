@@ -50,7 +50,7 @@
    .$bestOne = glabel("")
    .$doBMA = gcheckbox(.$translate("Average"),handler=.$updatePlot)
 
-    add(group,tmp <- gframe(.$translate("Hypothesis test")))
+    add(group,tmp <- gframe(.$translate("Hypothesis test"),horizontal=FALSE))
     testGroup = glayout(container=tmp)
     testGroup[2,2,anchor=c(-1,0)] = glabel(.$translate("Homogeneity of variances"))
     testGroup[2,3] = .$bartlett
@@ -62,23 +62,29 @@
     testGroup[5,3] =.$priorprob
     testGroup[6,2] =.$testAll
     testGroup[6,3] =.$doBMA
-    testGroup[7,2] = glabel(.$translate("Best model"))
-    testGroup[7,3] =.$bestOne
-    testGroup[8,2] = glabel(.$translate("BIC"))
-    testGroup[8,3] =.$bf
-    testGroup[9,2] = glabel(.$translate("Pr(M|D)"))
-    testGroup[9,3] =.$postprob
-    testGroup[10,1] = ""
+    # testGroup[10,1] = ""
     visible(testGroup)=TRUE
 
-    add(group, tmp <- gframe(.$translate("Model posterior estimates")),expand=TRUE)
+    buttonGroup1 = ggroup(container=tmp)
+    addSpring(buttonGroup1)
+    gbutton(.$translate("Compute"),container=buttonGroup1, handler=.$updatePlot)
+
+    add(group, tmp <- gframe(.$translate("Model and posterior estimates"),horizontal=FALSE),expand=TRUE)
+    resGroup = glayout(container=tmp)
+    resGroup[2,2] = glabel(.$translate("Best model"))
+    resGroup[2,3] =.$bestOne
+    resGroup[3,2] = glabel(.$translate("BIC"))
+    resGroup[3,3] =.$bf
+    resGroup[4,2] = glabel(.$translate("Pr(M|D)"))
+    resGroup[4,3] =.$postprob
+
     est.tab = cbind(Group=rep("",10),Means=rep("",10),Inf95=rep("",10),Sup95=rep("",10))
     colnames(est.tab) = .$translate(colnames(est.tab))
     add(tmp,.$postestim <- gtable(est.tab),expand=TRUE)
 
-    buttonGroup = ggroup(container=group)
-    addSpring(buttonGroup)
-    gbutton(.$translate("Compute"),container=buttonGroup, handler=.$updatePlot)
+    buttonGroup2 = ggroup(container=tmp)
+    addSpring(buttonGroup2)
+    gbutton(.$translate("Details"),container=buttonGroup2, handler=.$printModels)
   
   },
   onTestAll = function(.,h,...) {
@@ -173,21 +179,22 @@
 
       # Compute all possible models
       results = matrix(0,0,3*K)
-      modProbs = vector()
+      bics = vector()
       for(i in 1:ncol(models)) {
         test = .$testModel(mn,sd,N,models[,i])
         results = rbind(results,c(test$means,test$IC.inf,test$IC.sup))
-        modProbs = c(modProbs,test$bic)
+        bics = c(bics,test$bic)
         rownames(results)[i] = test$name
       }
       colnames(results) = c(paste("m",1:K,sep=""),paste("Inf",1:K,sep=""),paste("Sup",1:K,sep=""))
 
-      # Compute approximate Bayes factors and model posterior probs
-      modProbs = exp(-0.5*(modProbs - modProbs[1]))
-      bfs = modProbs
+      # Compute approximate model posterior probs
+      modProbs = exp(-0.5*(bics - min(bics)))
       modProbs = modProbs / sum(modProbs)
-      # bfs = modProbs/m0$prob
       
+      # Store model details
+     .$modelDetails = data.frame(Model=row.names(results),BIC=bics, Probs=round(modProbs,4))
+
       # Bayesian Model Averaging
       if(svalue(.$doBMA)) {
       
@@ -300,6 +307,16 @@
     list(model=mod,name=model.name,means=mt[mod],error=sqrt(corr.s2t),bic=bic,prob=prob,IC.inf=IC.inf[mod],IC.sup=IC.sup[mod])
   },
 
+  ### Print model detais (formula, BIC, Post. prob)
+  printModels = function(.,...) {
+  
+    k = order(.$modelDetails$BIC)
+    cat(.$translate("Model ranking:"),"\n")
+    print(.$modelDetails[k,],row.names=FALSE)
+    cat("\n")
+    galert(.$translate("Model ranking has been printed to the console."))
+  },
+  
   ### Gettext utility for translating messages
   translate = function(.,...) {
     gettext(..., domain="R-AtelieR")
@@ -319,7 +336,9 @@
   bestOne      =  NULL,                #
   bf           =  NULL,                #
   postprob     =  NULL,                #
-  postestim    =  NULL                 #
+  postestim    =  NULL,                #
+  modelDetails = data.frame(),         # Stores a list of all possible models with BICs and approximate post. probs.
+  detailWindow = NULL
 )
 
 
